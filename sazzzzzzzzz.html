@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Nee Vara Munadi... Nee Vandha Piragu ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   NEE VARA MUNADI... NEE VANDHA PIRAGU ❤️
+   A 2-month anniversary interactive love letter.
+
+   ---------- HOW TO CUSTOMISE ----------
+   1. Scroll to the very bottom of this file to the <script> tag
+      and edit the CONFIG object (her name, your name, the date,
+      your three memories).
+   2. Everything else — the diary entries, the comparisons, the
+      final letter — is already written for you. Feel free to
+      swap any line for something more specific to you two.
+   3. To add your song: put a file named love-song.mp3 inside
+      assets/music/  — the page works perfectly even without it.
+   ============================================================ */
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+
+:root{
+  --font-display:'Fraunces', serif;
+  --font-body:'Manrope', sans-serif;
+
+  /* "before" palette — ink, dusk, a hint of starlight gold */
+  --ink-1:#0b0a22;
+  --ink-2:#241a4f;
+  --moon-text:#f6f1e6;
+  --moon-dim:#a79fd1;
+  --violet:#b79bf5;
+  --star-gold:#ffd27a;
+
+  /* "after" palette — sunlit paper, coral, marigold */
+  --paper-1:#fff6e8;
+  --paper-2:#ffe3cf;
+  --paper-text:#3a2a1f;
+  --paper-dim:#8a7362;
+  --coral:#ff8a65;
+  --marigold:#ffb43d;
+
+  --bg-1:var(--ink-1);
+  --bg-2:var(--ink-2);
+  --text:var(--moon-text);
+  --text-dim:var(--moon-dim);
+  --accent:var(--violet);
+  --accent-2:var(--star-gold);
+  --card:rgba(255,255,255,0.05);
+  --border:rgba(255,255,255,0.14);
+  --shadow:0 20px 44px rgba(8,5,26,0.5);
+}
+
+body.theme-bright{
+  --bg-1:var(--paper-1);
+  --bg-2:var(--paper-2);
+  --text:var(--paper-text);
+  --text-dim:var(--paper-dim);
+  --accent:var(--coral);
+  --accent-2:var(--marigold);
+  --card:#fffaf2;
+  --border:rgba(58,42,31,0.14);
+  --shadow:0 20px 40px rgba(255,138,101,0.24);
+}
+
+body{
+  font-family:var(--font-body);
+  background:linear-gradient(160deg,var(--bg-1),var(--bg-2));
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background 1s ease, color .8s ease;
+}
+
+h1,h2,h3,.serif{ font-family:var(--font-display); font-weight:500; }
+
+::selection{ background:var(--accent); color:#fff; }
+
+button{ font-family:var(--font-body); border:none; cursor:pointer; background:none; color:inherit; }
+button:focus-visible, a:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+
+.hidden{ display:none !important; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+}
+
+/* ---------- background particles ---------- */
+#bg-particles{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1; }
+.particle{
+  position:absolute; bottom:-10%; will-change:transform, opacity;
+  animation-name:floatUp; animation-timing-function:ease-in; animation-iteration-count:infinite;
+  filter:drop-shadow(0 0 6px rgba(255,255,255,0.15));
+}
+@keyframes floatUp{
+  0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+  10%{ opacity:1; }
+  50%{ transform:translateY(-55vh) translateX(18px) rotate(10deg); }
+  90%{ opacity:1; }
+  100%{ transform:translateY(-115vh) translateX(-14px) rotate(-8deg); opacity:0; }
+}
+
+/* ---------- flash / transform overlay ---------- */
+#flash-overlay{
+  position:fixed; inset:0; z-index:9000; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 50%, #fff2d8, #ffb84d 45%, #ff7ca3 100%);
+}
+#flash-overlay.active{ animation:flashPulse 1.05s ease forwards; }
+@keyframes flashPulse{ 0%{opacity:0;} 35%{opacity:1;} 100%{opacity:0;} }
+
+/* ---------- confetti ---------- */
+#confetti-layer{ position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden; }
+.confetti-piece{ position:absolute; top:-8%; animation-name:confettiFall; animation-timing-function:ease-in; }
+@keyframes confettiFall{
+  0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+  100%{ transform:translateY(112vh) rotate(340deg); opacity:0; }
+}
+
+/* ---------- top progress dots ---------- */
+#progress-dots{
+  position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:500;
+  display:flex; gap:7px; padding:8px 14px; border-radius:999px;
+  background:rgba(0,0,0,0.08); backdrop-filter:blur(6px);
+}
+body.theme-dark #progress-dots{ background:rgba(255,255,255,0.06); }
+.dot{ width:6px; height:6px; border-radius:50%; background:var(--text-dim); opacity:.5; transition:all .4s ease; }
+.dot.active{ opacity:1; background:var(--accent); width:18px; border-radius:4px; }
+.dot.passed{ opacity:.85; background:var(--accent); }
+
+/* ---------- music toggle ---------- */
+#music-toggle{
+  position:fixed; top:14px; right:14px; z-index:500;
+  width:42px; height:42px; border-radius:50%;
+  background:var(--card); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; box-shadow:var(--shadow);
+  transition:transform .3s ease;
+}
+#music-toggle:active{ transform:scale(.9); }
+#music-toggle.playing{ animation:musicSpin 3s linear infinite; }
+@keyframes musicSpin{ from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+/* ---------- screens ---------- */
+.screen{
+  display:none; min-height:100vh; width:100%;
+  align-items:center; justify-content:center;
+  padding:88px 22px 60px;
+  position:relative; z-index:5;
+}
+.screen.active{ display:flex; }
+.screen-inner{ max-width:520px; width:100%; text-align:center; }
+
+.eyebrow-icons{ font-size:1.6rem; letter-spacing:10px; opacity:.85; margin-bottom:18px; }
+
+.title-xl{ font-size:clamp(1.9rem, 7vw, 2.9rem); line-height:1.25; margin-bottom:14px; }
+.title-lg{ font-size:clamp(1.5rem, 5.5vw, 2.1rem); line-height:1.3; margin-bottom:12px; }
+.subtitle{ font-size:1rem; color:var(--text-dim); margin-bottom:22px; }
+
+.fade-line{
+  opacity:0; transform:translateY(14px);
+  animation:fadeUp .8s ease forwards;
+  font-size:1.05rem; line-height:1.7; margin:0 auto 10px; max-width:400px;
+}
+@keyframes fadeUp{ to{ opacity:1; transform:translateY(0); } }
+
+.tw-cursor::after{ content:'|'; animation:blink 0.9s step-start infinite; margin-left:2px; }
+@keyframes blink{ 50%{opacity:0;} }
+
+.hero-name{
+  font-size:clamp(1.6rem,6vw,2.4rem); margin:18px 0 26px; font-style:italic;
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+.cta-btn{
+  display:inline-block; margin-top:20px; padding:15px 30px; font-size:1rem; font-weight:600;
+  border-radius:999px; color:#fff;
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));
+  box-shadow:var(--shadow);
+  transition:transform .25s ease, box-shadow .25s ease;
+  position:relative; overflow:hidden;
+}
+.cta-btn:hover{ transform:translateY(-2px) scale(1.02); }
+.cta-btn:active{ transform:scale(.95); }
+.cta-btn.ghost{ background:transparent; color:var(--text); border:1.5px solid var(--border); box-shadow:none; }
+.cta-btn::after{ content:''; position:absolute; inset:0; border-radius:999px; box-shadow:0 0 0 0 rgba(255,255,255,0.5); }
+.cta-btn:active::after{ animation:ripple .5s ease; }
+@keyframes ripple{ from{ box-shadow:0 0 0 0 rgba(255,255,255,.45);} to{ box-shadow:0 0 0 22px rgba(255,255,255,0); } }
+
+/* ---------- diary list (Before You page) ---------- */
+.diary-list{ max-width:420px; margin:0 auto; text-align:left; padding-left:24px; position:relative; }
+.diary-list::before{
+  content:''; position:absolute; left:6px; top:6px; bottom:6px; width:1.5px;
+  background:repeating-linear-gradient(to bottom, var(--border) 0 6px, transparent 6px 13px);
+}
+.diary-entry{ position:relative; margin-bottom:2px; }
+.diary-entry::before{
+  content:''; position:absolute; left:-24px; top:19px; width:8px; height:8px; border-radius:50%;
+  background:var(--accent); box-shadow:0 0 0 4px var(--bg-1);
+}
+.diary-toggle{
+  width:100%; text-align:left; padding:15px 6px; display:flex; align-items:center; justify-content:space-between;
+  gap:10px; font-size:1.02rem; font-weight:600; color:var(--text); border-bottom:1px solid var(--border);
+}
+.diary-toggle .tick{ opacity:0; transition:opacity .3s ease; color:var(--accent); font-size:1.05rem; flex-shrink:0; }
+.diary-toggle.done .tick{ opacity:1; }
+.diary-body{ max-height:0; overflow:hidden; transition:max-height .5s ease, padding .5s ease; padding:0 6px; }
+.diary-body.open{ max-height:220px; padding:12px 6px 18px; }
+.diary-body p{ color:var(--text-dim); line-height:1.7; font-size:.96rem; }
+
+#before-conclusion{ opacity:0; max-height:0; overflow:hidden; transition:opacity .6s ease, max-height .8s ease; margin-top:24px; }
+#before-conclusion.show{ opacity:1; max-height:220px; }
+
+/* ---------- transformation page ---------- */
+.sunflower-hero{
+  font-size:4.2rem; display:inline-block; margin-bottom:6px;
+  transform:scale(0); filter:drop-shadow(0 6px 18px rgba(255,184,77,.55));
+}
+.sunflower-hero.bloom{ animation:bloomIn 1.1s cubic-bezier(.34,1.56,.64,1) forwards; }
+@keyframes bloomIn{ 0%{ transform:scale(0) rotate(-40deg);} 70%{ transform:scale(1.18) rotate(8deg);} 100%{ transform:scale(1) rotate(0deg);} }
+
+.quote-block{
+  font-family:var(--font-display); font-style:italic; font-size:1.12rem; line-height:1.75;
+  padding:22px 20px; margin:22px 0; border-left:3px solid var(--accent);
+  background:var(--card); border-radius:0 16px 16px 0; text-align:left;
+}
+
+/* ---------- timeline (2 months page) ---------- */
+.timeline{ text-align:left; margin:24px 0; position:relative; padding-left:26px; }
+.timeline::before{ content:''; position:absolute; left:8px; top:6px; bottom:6px; width:2px; background:var(--border); }
+.t-node{ position:relative; margin-bottom:26px; }
+.t-node::before{
+  content:''; position:absolute; left:-26px; top:4px; width:14px; height:14px; border-radius:50%;
+  background:linear-gradient(120deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 4px var(--card);
+}
+.t-node h3{ font-size:1.1rem; margin-bottom:8px; }
+.t-node p{ color:var(--text-dim); font-size:.95rem; line-height:1.7; margin-bottom:2px; }
+
+.big-stat{ margin:26px 0; }
+.big-stat .num{
+  font-family:var(--font-display); font-size:4.4rem; line-height:1;
+  background:linear-gradient(120deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.big-stat .label{ letter-spacing:2px; color:var(--text-dim); font-size:.85rem; margin-top:4px; }
+.big-stat .sub{ font-size:.86rem; color:var(--text-dim); margin-top:8px; font-style:italic; }
+
+.kidaichudhu-list{ list-style:none; text-align:left; margin:18px 0; opacity:0; max-height:0; overflow:hidden; transition:opacity .5s ease, max-height .8s ease; }
+.kidaichudhu-list.show{ opacity:1; max-height:400px; }
+.kidaichudhu-list li{ padding:10px 0; font-size:1rem; border-bottom:1px dashed var(--border); }
+.kidaichudhu-list li:last-child{ border-bottom:none; }
+#kidaichudhu-final{ opacity:0; transform:translateY(8px); transition:all .6s ease; font-size:1.15rem; font-weight:600; margin-top:12px; }
+#kidaichudhu-final.show{ opacity:1; transform:translateY(0); }
+
+/* ---------- before/after comparison strips ---------- */
+.compare-strip{ text-align:left; padding:16px 4px; border-bottom:1px solid var(--border); }
+.compare-strip:last-of-type{ border-bottom:none; }
+.compare-strip h3{ font-size:1.04rem; margin-bottom:10px; }
+.compare-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.ba-btn{
+  padding:9px 16px; border-radius:999px; font-size:.86rem; font-weight:600;
+  border:1.5px solid var(--border); color:var(--text);
+}
+.ba-btn.before-b{ border-color:var(--text-dim); color:var(--text-dim); }
+.ba-btn.after-b{ border-color:var(--accent); color:var(--accent); }
+.ba-text{ display:none; font-size:.95rem; line-height:1.6; color:var(--text-dim); padding:8px 0 0; }
+.ba-text.show{ display:block; }
+.ba-text.after-text.show{ color:var(--text); font-weight:500; }
+
+/* ---------- about her page ---------- */
+.trait-list{ text-align:left; list-style:none; margin:16px 0; }
+.trait-list li{
+  opacity:0; transform:translateX(-10px); animation:slideIn .6s ease forwards;
+  padding:9px 0 9px 26px; position:relative; font-size:1rem; line-height:1.6;
+}
+.trait-list li::before{ content:'❤️'; position:absolute; left:0; top:9px; font-size:.8rem; }
+@keyframes slideIn{ to{ opacity:1; transform:translateX(0);} }
+
+.dedication{
+  margin:26px auto 4px; max-width:340px; padding:20px 18px; border-radius:20px;
+  border:1.5px dashed var(--border); background:var(--card);
+}
+.dedication .sunflower-mini{ font-size:1.6rem; display:block; margin-bottom:10px; }
+.dedication p{ font-size:1.02rem; line-height:1.6; }
+
+.letter-card{
+  text-align:left; background:var(--card); border:1px solid var(--border); border-radius:4px 20px 20px 20px;
+  padding:24px 22px; margin:22px 0; box-shadow:var(--shadow); font-size:.98rem; line-height:1.85;
+  white-space:pre-line; position:relative;
+}
+.wax-seal{
+  position:absolute; top:-16px; right:20px; width:44px; height:44px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--accent-2), var(--accent));
+  display:flex; align-items:center; justify-content:center; font-size:1.05rem; color:#fff;
+  box-shadow:0 8px 16px rgba(0,0,0,.28); transform:rotate(-9deg);
+}
+
+/* ---------- universe page ---------- */
+.universe-scene{
+  position:relative; background:var(--card); border:1px solid var(--border); border-radius:24px;
+  padding:26px 14px 10px; box-shadow:var(--shadow); margin-bottom:22px;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:16px 18px;
+}
+.universe-icon{
+  width:56px; height:56px; border-radius:50%; font-size:1.5rem;
+  background:radial-gradient(circle at 35% 28%, rgba(255,255,255,.18), transparent 60%), rgba(255,124,163,.1);
+  border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.universe-icon:nth-child(2n){ transform:translateY(-7px); }
+.universe-icon:nth-child(3n){ transform:translateY(6px); }
+.universe-icon:active{ transform:scale(.88); }
+.universe-icon.done{ box-shadow:0 0 0 3px var(--accent); }
+#universe-message{
+  min-height:70px; display:flex; align-items:center; justify-content:center; text-align:center;
+  font-family:var(--font-display); font-style:italic; font-size:1.04rem; padding:14px 10px 6px; line-height:1.6;
+  width:100%;
+}
+
+.memory-card{
+  text-align:left; background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:14px 16px; margin-bottom:10px; font-size:.92rem; color:var(--text-dim); box-shadow:var(--shadow);
+}
+.memory-card b{ display:block; color:var(--text); font-size:.85rem; margin-bottom:4px; font-family:var(--font-display); }
+
+/* ---------- keepsakes (replaces photos) ---------- */
+.keepsakes{ display:flex; flex-wrap:wrap; justify-content:center; gap:20px 16px; margin:20px 0 4px; }
+.keepsake{ width:118px; font-size:.78rem; line-height:1.4; color:var(--text-dim); text-align:center; position:relative; padding:14px 8px; }
+.keepsake .k-icon{ font-size:1.6rem; display:block; margin-bottom:8px; }
+.keepsake.note{
+  background:var(--card); border:1px solid var(--border); border-radius:3px;
+  transform:rotate(-4deg); box-shadow:var(--shadow);
+}
+.keepsake.note::before{
+  content:''; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:44px; height:15px; background:rgba(255,255,255,.35); border:1px solid rgba(255,255,255,.5);
+}
+.keepsake.ticket{
+  background:var(--card); border:1.5px dashed var(--border); border-radius:10px;
+  transform:rotate(3deg); box-shadow:var(--shadow);
+}
+.keepsake.ticket::before, .keepsake.ticket::after{
+  content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--bg-2);
+  top:50%; transform:translateY(-50%);
+}
+.keepsake.ticket::before{ left:-7px; }
+.keepsake.ticket::after{ right:-7px; }
+.keepsake.seal{
+  background:var(--card); border:1px solid var(--border); border-radius:50%;
+  width:118px; height:118px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transform:rotate(-1deg); box-shadow:var(--shadow); padding:10px;
+}
+
+/* ---------- envelope ---------- */
+.envelope-scene{ display:flex; flex-direction:column; align-items:center; gap:26px; margin:26px 0; transition:opacity .5s ease; }
+.envelope{ width:160px; height:110px; position:relative; margin-top:10px; }
+.envelope-back{ position:absolute; inset:0; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:var(--shadow); }
+.envelope-letter{ position:absolute; left:50%; top:14px; transform:translate(-50%,0); font-size:2.1rem; transition:transform .7s cubic-bezier(.34,1.56,.64,1); }
+.envelope-flap{
+  position:absolute; top:0; left:0; width:100%; height:56%;
+  background:linear-gradient(135deg, var(--accent-2), var(--accent));
+  clip-path:polygon(0 0, 100% 0, 50% 100%);
+  transform-origin:top; transition:transform .6s ease; border-radius:10px 10px 0 0;
+}
+.envelope.opened .envelope-flap{ transform:rotateX(180deg); }
+.envelope.opened .envelope-letter{ transform:translate(-50%,-64px) scale(1.15); }
+
+#letter-content{ opacity:0; max-height:0; overflow:hidden; transition:opacity .8s ease, max-height 1.2s ease; }
+#letter-content.show{ opacity:1; max-height:2600px; }
+
+.final-tagline{ font-family:var(--font-display); font-style:italic; font-size:1.25rem; margin:22px 0; }
+
+footer.byline{ margin-top:40px; font-size:.82rem; color:var(--text-dim); }
+
+@media (min-width:640px){
+  .screen{ padding:100px 40px 70px; }
+}
+</style>
+</head>
+<body class="theme-dark">
+
+<div id="bg-particles"></div>
+<div id="flash-overlay"></div>
+<div id="confetti-layer"></div>
+
+<div id="progress-dots">
+  <span class="dot" data-i="0"></span><span class="dot" data-i="1"></span><span class="dot" data-i="2"></span>
+  <span class="dot" data-i="3"></span><span class="dot" data-i="4"></span><span class="dot" data-i="5"></span>
+  <span class="dot" data-i="6"></span><span class="dot" data-i="7"></span>
+</div>
+
+<audio id="bg-music" loop>
+  <source src="assets/music/love-song.mp3" type="audio/mpeg">
+</audio>
+<button id="music-toggle" aria-label="Toggle music">🎵</button>
+
+<!-- ============ SCREEN 1 — INTRO ============ -->
+<section class="screen active" id="screen-intro">
+  <div class="screen-inner">
+    <div class="eyebrow-icons">🌙 ✨ ❤️</div>
+    <p class="title-lg tw-cursor" id="tw-line"></p>
+
+    <p class="fade-line" style="animation-delay:.2s">En life epdi irundhuchu theriyuma?</p>
+    <p class="fade-line" style="animation-delay:.55s">Konjam quiet-ah... konjam incomplete-ah...</p>
+    <p class="fade-line" style="animation-delay:.9s">Aana ippo? Ella naalum oru chinna celebration madhiri. 🥹</p>
+
+    <h1 class="title-xl" style="margin-top:26px;">2 MONTHS OF US ❤️</h1>
+
+    <p class="fade-line" style="animation-delay:1.3s">2 months mattum dhaan calendar sollum kanakku...</p>
+    <p class="fade-line" style="animation-delay:1.7s">Aana en heart-oda kanakku vera range-ah irukku.</p>
+
+    <p class="hero-name" style="animation:fadeUp .8s ease 2.1s forwards; opacity:0;">
+      Happy 2 Months, <span data-cfg="HER_NAME"></span> 🌻❤️
+    </p>
+
+    <button class="cta-btn" id="btn-start" style="animation:fadeUp .8s ease 2.5s forwards; opacity:0;">
+      Namma Story Start Pannalama? ❤️
+    </button>
+  </div>
+</section>
+
+<!-- ============ SCREEN 2 — BEFORE YOU ============ -->
+<section class="screen" id="screen-before">
+  <div class="screen-inner">
+    <div class="eyebrow-icons">🌙</div>
+    <h2 class="title-xl">Nee Vara Munadi...</h2>
+    <p class="subtitle">Touch pannu, oru oru pakkam-ah open pannu</p>
+
+    <div class="diary-list">
+      <div class="diary-entry" data-key="days">
+        <button class="diary-toggle">🌙 En Days <span class="tick">✓</span></button>
+        <div class="diary-body"><p>Naal ellam same schedule dhaan — wake up, work, scroll, sleep. Edhuvume "today special" nu feel pannala.</p></div>
+      </div>
+      <div class="diary-entry" data-key="nights">
+        <button class="diary-toggle">🌙 En Nights <span class="tick">✓</span></button>
+        <div class="diary-body"><p>Late night-la thoughts eppovume varum, aana adha share pannura oru correct person illa. Silence mattum company.</p></div>
+      </div>
+      <div class="diary-entry" data-key="phone">
+        <button class="diary-toggle">📱 En Phone <span class="tick">✓</span></button>
+        <div class="diary-body"><p>Notifications neraya varum — groups, spam, random pings. Aana genuine-ah wait pannura oru message mattum illa.</p></div>
+      </div>
+      <div class="diary-entry" data-key="smile">
+        <button class="diary-toggle">🥺 En Smile <span class="tick">✓</span></button>
+        <div class="diary-body"><p>Smile irundhuchu, aana adhu "reason" illama varra automatic smile illa. Konjam effort podanum-nu irundhuchu.</p></div>
+      </div>
+      <div class="diary-entry" data-key="playlist">
+        <button class="diary-toggle">🎵 En Playlist <span class="tick">✓</span></button>
+        <div class="diary-body"><p>Songs kettu irundhen full-ah, aana oru song kooda "idhu exact-ah en feeling" nu sollala.</p></div>
+      </div>
+    </div>
+
+    <div id="before-conclusion">
+      <p class="fade-line" style="animation:none; opacity:1; transform:none;">Adhu enakku theriyaama irundhuchu...</p>
+      <p class="fade-line" style="animation:none; opacity:1; transform:none; font-weight:600;">Oru naal, nee vandhu idha ellam completely maathividuva nu. ❤️</p>
+      <button class="cta-btn" id="btn-to-transform">Aana... Nee Vandha Piragu? 🌻</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 3 — TRANSFORMATION ============ -->
+<section class="screen" id="screen-transform">
+  <div class="screen-inner">
+    <div class="sunflower-hero" id="sunflower-hero">🌻</div>
+    <h2 class="title-xl">Appo Nee Vandha... ❤️</h2>
+
+    <p class="fade-line">En days maaruchu.</p>
+    <p class="fade-line" style="animation-delay:.3s">En nights maaruchu.</p>
+    <p class="fade-line" style="animation-delay:.6s">En phone kooda maaruchu — ippo ella notification-um un message-ah dhaan irukkanum nu wish pandren.</p>
+    <p class="fade-line" style="animation-delay:.9s">En thoughts maaruchu.</p>
+    <p class="fade-line" style="animation-delay:1.2s; font-weight:700; font-size:1.2rem;">Naanum maaritten. 🥹❤️</p>
+
+    <div class="quote-block">
+      Nee en life-ku vandhadhu oru chinna moment madhiri thonalam...<br><br>
+      Aana andha chinna moment dhaan, en life-oda romba periya, romba nalla change-ah maariduchu.
+    </div>
+
+    <button class="cta-btn" id="btn-to-months">Ippo Namma Life Paakalaama? 🌻</button>
+  </div>
+</section>
+
+<!-- ============ SCREEN 4 — 2 MONTHS OF US ============ -->
+<section class="screen" id="screen-months">
+  <div class="screen-inner">
+    <h2 class="title-xl">2 Months of Us... 🥹❤️</h2>
+
+    <div class="timeline">
+      <div class="t-node">
+        <h3>🌱 Month 1</h3>
+        <p>Everything pudhusu irundhuchu.</p>
+        <p>Pudhu conversations, pudhu jokes.</p>
+        <p>Konjam shy-ah, konjam excited-ah.</p>
+        <p>Namma rendu perayum, oru pudhu version-ah discover panna aarambichom.</p>
+      </div>
+      <div class="t-node">
+        <h3>🌻 Month 2</h3>
+        <p>Konjam more understanding vandhuchu.</p>
+        <p>Konjam more attachment, konjam more care.</p>
+        <p>Fights kooda cute-ah, silence kooda comfortable-ah maariduchu.</p>
+        <p>Innum konjam deep-ah, innum konjam real-ah aayiduchu namma bond.</p>
+      </div>
+    </div>
+
+    <p class="fade-line" style="animation:none; opacity:1; transform:none; font-weight:600;">Aana love mattum... Romba more. ❤️</p>
+
+    <div class="big-stat">
+      <div class="num">02</div>
+      <div class="label">MONTHS OF US</div>
+      <div class="sub">a.k.a. 60+ naatkal of unlimited random thoughts about you</div>
+    </div>
+
+    <p class="fade-line" style="animation:none; opacity:1; transform:none;">2 months dhaan aachu...</p>
+    <p class="fade-line" style="animation:none; opacity:1; transform:none;">Aana unna en life-la irundhu separate-ah imagine panna mudiyala.</p>
+
+    <div class="quote-block">Time-la 2 months... Aana memories-la romba neraya. ❤️</div>
+
+    <button class="cta-btn ghost" id="btn-kidaichudhu">Indha 2 Months-la Enakku Enna Kidaichudhu? 🥹</button>
+
+    <ul class="kidaichudhu-list" id="kidaichudhu-list">
+      <li>❤️ A reason to smile, no reason needed</li>
+      <li>💬 Someone to text "good morning" and mean it</li>
+      <li>🌻 Someone to miss even mid-conversation</li>
+      <li>🌙 Someone to think about right before sleep</li>
+      <li>🎧 Someone who makes ordinary songs feel personal</li>
+      <li>🫶🏻 Someone who just... feels like home</li>
+    </ul>
+    <p id="kidaichudhu-final">Mostly ellathaiyum vida, enakku kedaicha best thing... Nee dhaan. ❤️</p>
+
+    <div style="margin-top:26px;">
+      <button class="cta-btn" id="btn-to-beforeafter">Continue ❤️</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 5 — BEFORE VS AFTER ============ -->
+<section class="screen" id="screen-beforeafter">
+  <div class="screen-inner">
+    <h2 class="title-xl">Before vs After ❤️</h2>
+    <p class="subtitle">Ovvoru chinna thing-um maari pochu</p>
+
+    <div class="compare-strip" data-key="morning">
+      <h3>☀️ Morning</h3>
+      <div class="compare-row">
+        <button class="ba-btn before-b">Before Paakalaama? 🌙</button>
+        <button class="ba-btn after-b hidden">Aana After? 🌻</button>
+      </div>
+      <p class="ba-text before-text">Morning = Just another normal day start.</p>
+      <p class="ba-text after-text">Morning = Un message irukka nu first-ah phone check pannradhu. ❤️</p>
+    </div>
+
+    <div class="compare-strip" data-key="phone">
+      <h3>📱 Phone</h3>
+      <div class="compare-row">
+        <button class="ba-btn before-b">Before Paakalaama? 🌙</button>
+        <button class="ba-btn after-b hidden">Aana After? 🌻</button>
+      </div>
+      <p class="ba-text before-text">Phone = Oru normal device mattum.</p>
+      <p class="ba-text after-text">Phone = Un notification-kaaga wait pannura oru chinna world. ❤️</p>
+    </div>
+
+    <div class="compare-strip" data-key="night">
+      <h3>🌙 Night</h3>
+      <div class="compare-row">
+        <button class="ba-btn before-b">Before Paakalaama? 🌙</button>
+        <button class="ba-btn after-b hidden">Aana After? 🌻</button>
+      </div>
+      <p class="ba-text before-text">Night = Sleep, adhu mattum.</p>
+      <p class="ba-text after-text">Night = Namma pesina moments-ah replay pannitu thoongaradhu.</p>
+    </div>
+
+    <div class="compare-strip" data-key="smile">
+      <h3>❤️ Smile</h3>
+      <div class="compare-row">
+        <button class="ba-btn before-b">Before Paakalaama? 🌙</button>
+        <button class="ba-btn after-b hidden">Aana After? 🌻</button>
+      </div>
+      <p class="ba-text before-text">Smile = Random-ah, edho oru reason-ku varradhu.</p>
+      <p class="ba-text after-text">Smile = Unna nenachu automatic-ah varradhu, reason edhuvum theva illa.</p>
+    </div>
+
+    <div class="compare-strip" data-key="weekend">
+      <h3>🎈 Weekend</h3>
+      <div class="compare-row">
+        <button class="ba-btn before-b">Before Paakalaama? 🌙</button>
+        <button class="ba-btn after-b hidden">Aana After? 🌻</button>
+      </div>
+      <p class="ba-text before-text">Weekend = Free time, but konjam boring.</p>
+      <p class="ba-text after-text">Weekend = Un kooda pesradhukku full time kedaikkura best days.</p>
+    </div>
+
+    <div class="compare-strip" data-key="future">
+      <h3>✨ Future</h3>
+      <div class="compare-row">
+        <button class="ba-btn before-b">Before Paakalaama? 🌙</button>
+        <button class="ba-btn after-b hidden">Aana After? 🌻</button>
+      </div>
+      <p class="ba-text before-text">Future = Just oru vague word.</p>
+      <p class="ba-text after-text">Future pathi yosicha, adhula definitely nee irukkanum nu clear-ah theriyudhu.</p>
+    </div>
+
+    <div class="quote-block">
+      Nee vandha apram life "perfect" aagala...<br><br>Aana adhu "enough" nu feel aaga aarambichiduchu — adhuve periya maatram. ❤️
+    </div>
+
+    <button class="cta-btn" id="btn-to-about">Continue ❤️</button>
+  </div>
+</section>
+
+<!-- ============ SCREEN 6 — ABOUT HER ============ -->
+<section class="screen" id="screen-about">
+  <div class="screen-inner">
+    <h2 class="title-xl">Unna Pathi Konjam Sollanum... ❤️</h2>
+    <p class="fade-line" style="animation:none; opacity:1; transform:none;">Unna describe panna words podhadhu, aanalum try pannuren...</p>
+
+    <ul class="trait-list" id="trait-list">
+      <li style="animation-delay:.1s">Un smile — oru bad day-ah kooda okay-ah maathura power irukku.</li>
+      <li style="animation-delay:.25s">Un care — chinna chinna things-ilayum kaattura andha attention.</li>
+      <li style="animation-delay:.4s">Un kovam — konjam scary-ah irundhalum, romba cute-ah irukkum.</li>
+      <li style="animation-delay:.55s">Un childish moments — suddenly full excitement-oda pesradhu.</li>
+      <li style="animation-delay:.7s">Un pesura way — same topic-ah kooda interesting-ah pannidra style.</li>
+      <li style="animation-delay:.85s">Un chinna chinna habits — naan notice pannitu irukken nu unakku theriyaadhadhu.</li>
+      <li style="animation-delay:1s">Nee irukkura presence — edhuvum pesalam kooda comfortable-ah irukkardhu.</li>
+    </ul>
+    <p class="fade-line" style="animation-delay:1.2s; font-weight:600;">Idhu ellam serndhu thaan, unna enakku ivlo special aakudhu. ❤️</p>
+
+    <div class="dedication">
+      <span class="sunflower-mini">🌻</span>
+      <p class="serif">This entire page runs on thoughts of <span data-cfg="HER_NAME"></span>.</p>
+    </div>
+
+    <button class="cta-btn" id="btn-to-universe" style="margin-top:22px;">Continue ❤️</button>
+  </div>
+</section>
+
+<!-- ============ SCREEN 7 — OUR LITTLE UNIVERSE ============ -->
+<section class="screen" id="screen-universe">
+  <div class="screen-inner">
+    <h2 class="title-xl">Namma Little Universe 🌙🐱🌻</h2>
+    <p class="subtitle">Oru icon-a touch pannu, adhu enna solranu paaru</p>
+
+    <div class="universe-scene">
+      <button class="universe-icon" data-key="moon">🌙</button>
+      <button class="universe-icon" data-key="sunflower">🌻</button>
+      <button class="universe-icon" data-key="heart">❤️</button>
+      <button class="universe-icon" data-key="cat">🐱</button>
+      <button class="universe-icon" data-key="star">⭐</button>
+      <button class="universe-icon" data-key="song">🎶</button>
+      <p id="universe-message">Oru icon-a click pannu...</p>
+    </div>
+
+    <h3 style="margin-top:30px; margin-bottom:14px; font-size:1.15rem;">Namma 2 Month Memories ❤️</h3>
+    <div class="memory-card"><b><span data-cfg="OUR_SPECIAL_DATE"></span></b>Namma special date</div>
+    <div class="memory-card"><b>Memory 1</b><span data-cfg="MEMORY_1"></span></div>
+    <div class="memory-card"><b>Memory 2</b><span data-cfg="MEMORY_2"></span></div>
+    <div class="memory-card"><b>Memory 3</b><span data-cfg="MEMORY_3"></span></div>
+
+    <h3 style="margin-top:28px; margin-bottom:6px; font-size:1.15rem;">Namma Small Keepsakes 🎟️</h3>
+    <div class="keepsakes">
+      <div class="keepsake note"><span class="k-icon">📝</span>Namma first proper conversation</div>
+      <div class="keepsake ticket"><span class="k-icon">🎫</span>Admit One: 2 Hearts, Unlimited Overthinking</div>
+      <div class="keepsake seal"><span class="k-icon">💌</span>Sealed with love, 2 months strong</div>
+    </div>
+
+    <button class="cta-btn" id="btn-to-letter" style="margin-top:26px;">Innum Oru Secret Irukku... 🥹</button>
+  </div>
+</section>
+
+<!-- ============ SCREEN 8 — FINAL LOVE LETTER ============ -->
+<section class="screen" id="screen-letter">
+  <div class="screen-inner">
+    <h2 class="title-xl">Last Chapter... 🥹</h2>
+
+    <div class="envelope-scene" id="envelope-scene">
+      <button class="cta-btn" id="open-heart-btn">Un Heart-a Open Pannu 💌</button>
+      <div class="envelope" id="envelope">
+        <div class="envelope-back"></div>
+        <div class="envelope-letter">💌</div>
+        <div class="envelope-flap"></div>
+      </div>
+    </div>
+
+    <div id="letter-content">
+      <p class="fade-line" style="animation:none; opacity:1; transform:none;">60 naatkal...</p>
+      <p class="fade-line" style="animation:none; opacity:1; transform:none;">1440+ mani neram...</p>
+      <p class="fade-line" style="animation:none; opacity:1; transform:none;">Innumeraya chinna chinna moments...</p>
+      <p class="fade-line" style="animation:none; opacity:1; transform:none; font-weight:600;">Oru romba special person. ❤️</p>
+
+      <p class="hero-name" style="margin-top:18px;"><span data-cfg="HER_NAME"></span>...</p>
+      <p class="title-lg">Happy 2 Months of Us. 🌻❤️</p>
+
+      <div class="letter-card">
+        <span class="wax-seal">❤️</span>Ippo naan idha type panra intha second-um, oru chinna smile-oda dhaan start aaguthu — because idhu unakku, <span data-cfg="HER_NAME"></span>.
+
+60 naatkal, 1440 mani neram, innum konjam extra minutes — lekkam vachu paakalam nu try pannen, aana unna nenachu naan feel panra andha alavu happiness-ku edhuvume compare aagala.
+
+Nee vara munadi, en day oru straight-forward schedule-ah dhaan irundhuchu. Wake up, work, repeat. Ippo? Every chinna chinna thing-ilayum oru extra spark irukku — un morning text-ku wait pannradhu mudhal, un oru voice note-ku full-ah smile pannradhu varaikkum.
+
+Nee kovam pannalum cute-ah irukka, nee silly-ah pesalum en favourite sound-ah irukka, nee sadness-la irundhalum first-ah enna nenachu message pannradhu — indha ella version of you-vum enakku romba pidichirukku.
+
+Perfect-ah irukkanum nu naan yaarayum expect pannala, namma rendu perayum sollala. Aana namma together-ah irukkura ovvoru mistake-um, ovvoru laugh-um, ovvoru random 2am conversation-um — adhu ellame enakku innum jaasthi pudikkardha maadhiri aakidichu.
+
+Idhu vera edhume illa, <span data-cfg="HER_NAME"></span>. Idhu naan every naalum, konjam konjam-ah, innum jaasthi-ah love pannitu irukkura oru simple story.
+
+So official-ah — Happy 2 Months. Naan indha 60 naatkalum, adha follow pannapora ella naatkalum, unnoda dhaan spend pannanum nu decide pannirukken.
+
+Love you, ippozhudhum, everytime-um, kandippa mundhaanaalum. 🌻❤️
+
+— <span data-cfg="MY_NAME"></span>
+      </div>
+
+      <p class="final-tagline">Chapter 1: Complete. Chapter 2? Innum Konjam Cute-ah Irukkum. ♾️</p>
+
+      <button class="cta-btn ghost" id="btn-restart">Namma Story-a Again Start Pannalama? ♾️</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   ✏️  EDIT THESE — your personal details
+   ============================================================ */
+const CONFIG = {
+  HER_NAME: "Sazzy Luna",
+  MY_NAME: "Your Name",
+  OUR_SPECIAL_DATE: "13.07.2026",
+  MEMORY_1: "Naduraathiri varaikkum video call-la pesurathu",
+  MEMORY_2: "Rendu perum serthu music kekurathu",
+  MEMORY_3: "Nee en kuda irukurathu"
+};
+/* ============================================================ */
+
+const screensOrder = ['intro','before','transform','months','beforeafter','about','universe','letter'];
+let introPlayed = false;
+const beforeRevealed = new Set();
+
+function applyConfig(){
+  document.querySelectorAll('[data-cfg]').forEach(el=>{
+    const key = el.getAttribute('data-cfg');
+    if(CONFIG[key] !== undefined) el.textContent = CONFIG[key];
+  });
+}
+
+function updateDots(activeId){
+  const idx = screensOrder.indexOf(activeId);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active', i===idx);
+    d.classList.toggle('passed', i<idx);
+  });
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const target = document.getElementById('screen-'+id);
+  target.classList.add('active');
+  updateDots(id);
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(id==='intro' && !introPlayed){
+    introPlayed = true;
+    typeWriter(document.getElementById('tw-line'), 'Nee vara munadi...', 55);
+  }
+}
+
+function typeWriter(el, text, speed){
+  el.textContent='';
+  let i=0;
+  (function step(){
+    if(i<text.length){
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(step, speed);
+    } else {
+      el.classList.remove('tw-cursor');
+    }
+  })();
+}
+
+/* ---------- background particles ---------- */
+function spawnParticles(theme){
+  const container = document.getElementById('bg-particles');
+  container.innerHTML='';
+  const sets = { dark:['🌙','⭐','✨','❤️'], bright:['❤️','🌻','✨','💕','🐱'] };
+  const emojis = sets[theme];
+  const count = window.innerWidth < 600 ? 14 : 22;
+  for(let i=0;i<count;i++){
+    const span=document.createElement('span');
+    span.className='particle';
+    span.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    span.style.left=Math.random()*100+'%';
+    span.style.animationDuration=(10+Math.random()*14)+'s';
+    span.style.animationDelay=(Math.random()*12)+'s';
+    span.style.fontSize=(14+Math.random()*16)+'px';
+    span.style.opacity=(0.35+Math.random()*0.45).toFixed(2);
+    container.appendChild(span);
+  }
+}
+
+/* ---------- confetti ---------- */
+function burstConfetti(){
+  const layer=document.getElementById('confetti-layer');
+  const emojis=['❤️','🌻','✨','⭐','🐱','💕'];
+  for(let i=0;i<44;i++){
+    const s=document.createElement('span');
+    s.className='confetti-piece';
+    s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left=Math.random()*100+'%';
+    s.style.animationDuration=(3+Math.random()*3)+'s';
+    s.style.animationDelay=(Math.random()*1.2)+'s';
+    s.style.fontSize=(15+Math.random()*15)+'px';
+    layer.appendChild(s);
+    setTimeout(()=>s.remove(), 7500);
+  }
+}
+
+/* ---------- theme transform ---------- */
+function triggerBloom(){
+  const sf=document.getElementById('sunflower-hero');
+  sf.classList.remove('bloom');
+  void sf.offsetWidth;
+  sf.classList.add('bloom');
+}
+
+function transformToAfter(){
+  const overlay=document.getElementById('flash-overlay');
+  overlay.classList.remove('active'); void overlay.offsetWidth;
+  overlay.classList.add('active');
+  setTimeout(()=>{
+    document.body.classList.remove('theme-dark');
+    document.body.classList.add('theme-bright');
+    spawnParticles('bright');
+    showScreen('transform');
+    triggerBloom();
+  }, 360);
+  setTimeout(()=> overlay.classList.remove('active'), 1100);
+}
+
+/* ---------- Before You diary ---------- */
+document.querySelectorAll('#screen-before .diary-toggle').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const entry = btn.closest('.diary-entry');
+    const body = entry.querySelector('.diary-body');
+    body.classList.toggle('open');
+    btn.classList.toggle('done', body.classList.contains('open'));
+    if(body.classList.contains('open')) beforeRevealed.add(entry.dataset.key);
+    if(beforeRevealed.size===5){
+      document.getElementById('before-conclusion').classList.add('show');
+    }
+  });
+});
+document.getElementById('btn-to-transform').addEventListener('click', transformToAfter);
+
+/* ---------- nav buttons ---------- */
+document.getElementById('btn-start').addEventListener('click', ()=>showScreen('before'));
+document.getElementById('btn-to-months').addEventListener('click', ()=>showScreen('months'));
+document.getElementById('btn-to-beforeafter').addEventListener('click', ()=>showScreen('beforeafter'));
+document.getElementById('btn-to-about').addEventListener('click', ()=>showScreen('about'));
+document.getElementById('btn-to-universe').addEventListener('click', ()=>showScreen('universe'));
+document.getElementById('btn-to-letter').addEventListener('click', ()=>showScreen('letter'));
+
+/* ---------- kidaichudhu reveal ---------- */
+document.getElementById('btn-kidaichudhu').addEventListener('click', function(){
+  document.getElementById('kidaichudhu-list').classList.add('show');
+  setTimeout(()=> document.getElementById('kidaichudhu-final').classList.add('show'), 500);
+  this.classList.add('hidden');
+});
+
+/* ---------- before/after compare strips ---------- */
+document.querySelectorAll('.compare-strip').forEach(card=>{
+  const beforeBtn = card.querySelector('.before-b');
+  const afterBtn = card.querySelector('.after-b');
+  const beforeText = card.querySelector('.before-text');
+  const afterText = card.querySelector('.after-text');
+  beforeBtn.addEventListener('click', ()=>{
+    beforeText.classList.add('show');
+    afterBtn.classList.remove('hidden');
+    beforeBtn.classList.add('hidden');
+  });
+  afterBtn.addEventListener('click', ()=>{
+    afterText.classList.add('show');
+    afterBtn.classList.add('hidden');
+  });
+});
+
+/* ---------- universe icons ---------- */
+const universeMessages = {
+  moon: 'Night vandhaalum, en thoughts-la nee always online-ah irukka.',
+  sunflower: 'Un smile-ku indha sunflower kooda competition poda nenaikadhu.',
+  heart: 'Indha heart-la, unakku oru permanent seat reserve pannirukken.',
+  cat: 'Namma rendu perum ippadi cute-ah irukka epdi mudinjadhu? 😂❤️',
+  star: 'En dark days-lam, nee oru chinna star madhiri vandhu light podra.',
+  song: 'Ippo every song-um konjam unna pathi dhaan pesudhu madhiri feel aaguthu.'
+};
+document.querySelectorAll('.universe-icon').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const msg = document.getElementById('universe-message');
+    msg.style.opacity=0;
+    setTimeout(()=>{
+      msg.textContent = universeMessages[btn.dataset.key];
+      msg.style.opacity=1;
+    },180);
+    btn.classList.add('done');
+  });
+});
+
+/* ---------- envelope / letter ---------- */
+document.getElementById('open-heart-btn').addEventListener('click', function(){
+  const envelope=document.getElementById('envelope');
+  envelope.classList.add('opened');
+  this.classList.add('hidden');
+  setTimeout(()=>{
+    document.getElementById('envelope-scene').classList.add('hidden');
+    document.getElementById('letter-content').classList.add('show');
+    setTimeout(()=>{
+      burstConfetti();
+      setTimeout(burstConfetti, 900);
+    }, 500);
+  }, 900);
+});
+
+document.getElementById('btn-restart').addEventListener('click', resetStory);
+
+function resetStory(){
+  document.body.classList.remove('theme-bright');
+  document.body.classList.add('theme-dark');
+  spawnParticles('dark');
+
+  document.querySelectorAll('#screen-before .diary-body.open').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('#screen-before .diary-toggle.done').forEach(el=>el.classList.remove('done'));
+  beforeRevealed.clear();
+  document.getElementById('before-conclusion').classList.remove('show');
+
+  document.querySelectorAll('.ba-text.show').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.after-b').forEach(b=>b.classList.add('hidden'));
+  document.querySelectorAll('.before-b').forEach(b=>b.classList.remove('hidden'));
+
+  document.getElementById('universe-message').textContent='Oru icon-a click pannu...';
+  document.querySelectorAll('.universe-icon.done').forEach(b=>b.classList.remove('done'));
+
+  document.getElementById('kidaichudhu-list').classList.remove('show');
+  document.getElementById('kidaichudhu-final').classList.remove('show');
+  document.getElementById('btn-kidaichudhu').classList.remove('hidden');
+
+  document.getElementById('envelope').classList.remove('opened');
+  document.getElementById('letter-content').classList.remove('show');
+  document.getElementById('envelope-scene').classList.remove('hidden');
+  document.getElementById('open-heart-btn').classList.remove('hidden');
+
+  introPlayed = false;
+  showScreen('intro');
+}
+
+/* ---------- music ---------- */
+const musicBtn=document.getElementById('music-toggle');
+const audioEl=document.getElementById('bg-music');
+let musicPlaying=false;
+musicBtn.addEventListener('click', ()=>{
+  if(!musicPlaying){
+    audioEl.play().then(()=>{
+      musicPlaying=true;
+      musicBtn.classList.add('playing');
+      musicBtn.textContent='🎶';
+    }).catch(()=>{ /* file missing or blocked — fail silently */ });
+  } else {
+    audioEl.pause();
+    musicPlaying=false;
+    musicBtn.classList.remove('playing');
+    musicBtn.textContent='🎵';
+  }
+});
+
+/* ---------- init ---------- */
+applyConfig();
+spawnParticles('dark');
+showScreen('intro');
+</script>
+</body>
+</html>
